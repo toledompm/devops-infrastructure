@@ -4,5 +4,6 @@ module "rds" {
   password         = var.rds_password
   name             = var.rds_db_name
   port             = var.rds_port
-  public_subnet_id = var.rds_public_subnet_id
+  vpc_id           = var.vpc_id
+  public_subnets   = split(",", var.rds_public_subnets)
 }

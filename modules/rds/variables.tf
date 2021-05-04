@@ -28,8 +28,11 @@ variable "port" {
   description = "Database port"
 }
 
-variable "public_subnet_id" {
-  type        = string
-  default     = ""
-  description = "Subnet id"
+variable "public_subnets" {
+  type        = list(string)
+  default     = []
+}
+
+variable "vpc_id" {
+    type = string
 }
