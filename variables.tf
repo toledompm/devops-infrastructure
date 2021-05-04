@@ -1,7 +1,5 @@
-variable "rds_public_subnet_id" {
+variable "rds_public_subnets" {
   type        = string
-  default     = ""
-  description = "Rds subnet id"
 }
 
 variable "rds_username" {
@@ -11,7 +9,7 @@ variable "rds_username" {
 
 variable "rds_password" {
   type        = string
-  default     = ""
+  description = "Must be greater than 8 characters"
 }
 
 variable "rds_port" {
@@ -22,4 +20,8 @@ variable "rds_port" {
 variable "rds_db_name" {
   type        = string
   default     = ""
+}
+
+variable "vpc_id" {
+    type = string
 }
