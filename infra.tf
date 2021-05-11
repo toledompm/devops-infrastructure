@@ -7,3 +7,9 @@ module "rds" {
   vpc_id           = var.vpc_id
   public_subnets   = split(",", var.rds_public_subnets)
 }
+
+module "ecs" {
+  source = "./modules/ecs"
+  vpc_id = var.vpc_id
+  subnet_ids = split(",", var.rds_public_subnets)
+}
