@@ -1,17 +1,17 @@
 data "aws_subnet" "public_subnets" {
-    count = length(var.public_subnets)
-    id = var.public_subnets[count.index]
+  count = length(var.public_subnets)
+  id = var.public_subnets[count.index]
 }
 
 data "aws_vpc" "vpc" {
-    id = var.vpc_id
+  id = var.vpc_id
 }
 
 resource "aws_db_subnet_group" "public_subnet_group" {
-    name       = "rds_subnet"
-    subnet_ids = [
-        for i, v in data.aws_subnet.public_subnets: v.id
-    ]
+  name       = "rds_subnet"
+  subnet_ids = [
+    for i, v in data.aws_subnet.public_subnets: v.id
+  ]
 }
 
 resource "aws_db_instance" "db" {

@@ -34,5 +34,5 @@ variable "public_subnets" {
 }
 
 variable "vpc_id" {
-    type = string
+  type = string
 }

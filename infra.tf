@@ -13,3 +13,9 @@ module "ecs" {
   vpc_id = var.vpc_id
   subnet_ids = split(",", var.rds_public_subnets)
 }
+
+module "asg" {
+  source = "./modules/asg"
+  vpc_id = var.vpc_id
+  subnet_ids = split(",", var.rds_public_subnets)
+}

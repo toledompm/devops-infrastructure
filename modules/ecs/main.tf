@@ -1,53 +1,53 @@
 locals {
-    default_tags = {
-        Terraform = true
-    }
+  default_tags = {
+    Terraform = true
+  }
 }
 
 data "aws_vpc" "vpc" {
-    id = var.vpc_id
+  id = var.vpc_id
 }
 
 resource "aws_ecs_cluster" "backend" {
-    name = "devops-infra-cluster"
+  name = "devops-infra-cluster"
 
-    setting {
-        name  = "containerInsights"
-        value = "disabled"
-    }
+  setting {
+    name  = "containerInsights"
+    value = "disabled"
+  }
 
-    tags = local.default_tags
+  tags = local.default_tags
 }
 
 resource "aws_ecs_task_definition" "app_task" {
-    family = "service"
-    network_mode = "awsvpc"
-    execution_role_arn = aws_iam_role.backend_task_execution.arn
+  family = "service"
+  network_mode = "awsvpc"
+  execution_role_arn = aws_iam_role.backend_task_execution.arn
 
-    container_definitions = jsonencode([
+  container_definitions = jsonencode([
+    {
+      name = "devops-application"
+      image = "jasoncarneiro/devops-app:latest"
+      cpu = 1
+      memory = 512
+      essential = true
+      environment = [
         {
-            name = "devops-application"
-            image = "jasoncarneiro/devops-app:latest"
-            cpu = 1
-            memory = 512
-            essential = true
-            environment = [
-                {
-                    name = "PORT"
-                    value = "3000"
-                }
-            ]
-            portMappings = [
-                {
-                    containerPort = 3000
-                    hostPort = 3000
-                }
-            ]
-            networkMode = "awsvpc"
+          name = "PORT"
+          value = "3000"
         }
-    ])
-    
-    tags = local.default_tags
+      ]
+      portMappings = [
+        {
+          containerPort = 3000
+          hostPort = 3000
+        }
+      ]
+      networkMode = "awsvpc"
+    }
+  ])
+  
+  tags = local.default_tags
 }
 
 resource "aws_security_group" "ecs_sg" {
