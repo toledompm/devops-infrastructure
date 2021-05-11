@@ -27,7 +27,7 @@ resource "aws_launch_configuration" "ecs_launch_config" {
 
 resource "aws_autoscaling_group" "backend" {
   name = "devops-infra-asg"
-  launch_configuration = aws_launch_configuration.ecs_launch_config
+  launch_configuration = aws_launch_configuration.ecs_launch_config.name
   vpc_zone_identifier = [for i, v in data.aws_subnet.subnet_ids: v.id]
 
   desired_capacity = 1
@@ -45,7 +45,7 @@ resource "aws_security_group" "asg_sg" {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
-    cidr_blocks = [data.aws_vpc.vpc.cidr_block]
+    cidr_blocks = [data.aws_vpc.vpc.cidr_block, "0.0.0.0/0"]
   }
 
   egress {

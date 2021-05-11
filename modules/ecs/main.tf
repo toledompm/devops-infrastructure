@@ -43,7 +43,6 @@ resource "aws_ecs_task_definition" "app_task" {
           hostPort = 3000
         }
       ]
-      networkMode = "awsvpc"
     }
   ])
   
@@ -58,7 +57,7 @@ resource "aws_security_group" "ecs_sg" {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
-    cidr_blocks = [data.aws_vpc.vpc.cidr_block]
+    cidr_blocks = [data.aws_vpc.vpc.cidr_block, "0.0.0.0/0"]
   }
 
   egress {
@@ -84,7 +83,6 @@ resource "aws_ecs_service" "backend" {
   network_configuration {
     subnets = var.subnet_ids
     security_groups = [aws_security_group.ecs_sg.id]
-    assign_public_ip = false
   }
 
   tags = local.default_tags
