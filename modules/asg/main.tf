@@ -23,6 +23,7 @@ resource "aws_launch_configuration" "ecs_launch_config" {
   security_groups = [aws_security_group.asg_sg.id]
   user_data = "#!/bin/bash\necho ECS_CLUSTER=devops-infra-cluster >> /etc/ecs/ecs.config"
   instance_type = "t2.micro"
+  key_name = "devops-ecs"
 }
 
 resource "aws_autoscaling_group" "backend" {
@@ -42,9 +43,16 @@ resource "aws_security_group" "asg_sg" {
   vpc_id      = data.aws_vpc.vpc.id
 
   ingress {
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
+    protocol    = "tcp"
+    from_port   = 3000
+    to_port     = 3000
+    cidr_blocks = [data.aws_vpc.vpc.cidr_block, "0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 22
+    to_port     = 22
     cidr_blocks = [data.aws_vpc.vpc.cidr_block, "0.0.0.0/0"]
   }
 

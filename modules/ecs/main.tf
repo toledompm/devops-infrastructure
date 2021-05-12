@@ -21,13 +21,12 @@ resource "aws_ecs_cluster" "backend" {
 
 resource "aws_ecs_task_definition" "app_task" {
   family = "service"
-  network_mode = "awsvpc"
   execution_role_arn = aws_iam_role.backend_task_execution.arn
 
   container_definitions = jsonencode([
     {
       name = "devops-application"
-      image = "jasoncarneiro/devops-app:latest"
+      image = var.docker_image
       cpu = 1
       memory = 512
       essential = true
@@ -49,29 +48,6 @@ resource "aws_ecs_task_definition" "app_task" {
   tags = local.default_tags
 }
 
-resource "aws_security_group" "ecs_sg" {
-  name        = "ecs_sg"
-  vpc_id      = data.aws_vpc.vpc.id
-
-  ingress {
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
-    cidr_blocks = [data.aws_vpc.vpc.cidr_block, "0.0.0.0/0"]
-  }
-
-  egress {
-    protocol  = "-1"
-    from_port = 0
-    to_port   = 0
-
-    cidr_blocks = [
-      "0.0.0.0/0",
-    ]
-  }
-}
-
-
 resource "aws_ecs_service" "backend" {
   name            = "devops-infra-ecs-service"
   cluster         = aws_ecs_cluster.backend.id
@@ -79,11 +55,6 @@ resource "aws_ecs_service" "backend" {
   desired_count   = 1
 
   launch_type = "EC2"
-
-  network_configuration {
-    subnets = var.subnet_ids
-    security_groups = [aws_security_group.ecs_sg.id]
-  }
 
   tags = local.default_tags
 }
