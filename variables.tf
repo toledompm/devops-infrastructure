@@ -23,5 +23,9 @@ variable "rds_db_name" {
 }
 
 variable "vpc_id" {
-    type = string
+  type = string
+}
+
+variable "docker_image" {
+  type = string
 }
