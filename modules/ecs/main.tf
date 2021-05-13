@@ -53,6 +53,8 @@ resource "aws_ecs_service" "backend" {
   cluster         = aws_ecs_cluster.backend.id
   task_definition = aws_ecs_task_definition.app_task.arn
   desired_count   = 1
+  deployment_minimum_healthy_percent = 0
+  force_new_deployment = true
 
   launch_type = "EC2"
 
