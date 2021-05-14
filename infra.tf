@@ -24,3 +24,7 @@ module "asg" {
   vpc_id = var.vpc_id
   subnet_ids = local.subnet_ids
 }
+
+module "ecr" {
+  source = "./modules/ecr"
+}
