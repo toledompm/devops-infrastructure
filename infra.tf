@@ -27,4 +27,5 @@ module "asg" {
 
 module "ecr" {
   source = "./modules/ecr"
+  repository_name = "devops-infraestructure"
 }
