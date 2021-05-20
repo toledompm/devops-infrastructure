@@ -1,7 +1,3 @@
-variable "rds_public_subnets" {
-  type        = string
-}
-
 variable "rds_username" {
   type        = string
   default     = ""
@@ -20,10 +16,6 @@ variable "rds_port" {
 variable "rds_db_name" {
   type        = string
   default     = ""
-}
-
-variable "vpc_id" {
-  type = string
 }
 
 variable "docker_image" {
