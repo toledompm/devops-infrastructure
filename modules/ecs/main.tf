@@ -59,6 +59,10 @@ resource "aws_ecs_service" "backend" {
   launch_type = "EC2"
 
   tags = local.default_tags
+
+  depends_on = [
+    aws_ecs_task_definition.app_task
+  ]
 }
 
 resource "aws_iam_role" "backend_task_execution" {
