@@ -1,13 +1,14 @@
 provider "aws" {
   profile = "default"
-  region  = "us-east-1"
+  region  = var.region
 }
 
 terraform {
   backend "s3" {
-    bucket         = "terraform-devops-infra-fatec"
-    key            = "terraform/main.tfstate"
-    region         = "us-east-1"
-    encrypt        = false
+    bucket               = "terraform-devops-infra-fatec"
+    key                  = "main.tfstate"
+    workspace_key_prefix = "terraform"
+    region               = "us-east-1"
+    encrypt              = false
   }
 }
