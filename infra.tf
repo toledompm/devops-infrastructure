@@ -1,14 +1,18 @@
 locals {
   subnet_ids = [
-    module.network.public_subnet_a,
-    module.network.public_subnet_b,
-    module.network.private_subnet_a,
-    module.network.private_subnet_b
+    module.network[0].public_subnet_a,
+    module.network[0].public_subnet_b,
+    module.network[0].private_subnet_a,
+    module.network[0].private_subnet_b
   ]
-  vpc_id = module.network.vpc_id
+
+  vpc_id = module.network[0].vpc_id
+
+  env = terraform.workspace
 }
 
 module "network" {
+  count                       = local.environments[local.env].enable_net ? 1 : 0
   source                      = "./modules/network"
   cidr_block                  = "10.0.0.0/16"
   public_subnet_a_cidr_block  = "10.0.1.0/24"
@@ -19,6 +23,7 @@ module "network" {
 }
 
 module "rds" {
+  count            = local.environments[local.env].enable_rds ? 1 : 0
   source           = "./modules/rds"
   username         = var.rds_username
   password         = var.rds_password
@@ -29,6 +34,7 @@ module "rds" {
 }
 
 module "ecs" {
+  count  = local.environments[local.env].enable_ecs ? 1 : 0
   source = "./modules/ecs"
   vpc_id = local.vpc_id
   subnet_ids = [local.subnet_ids[0], local.subnet_ids[1]]
@@ -36,12 +42,14 @@ module "ecs" {
 }
 
 module "asg" {
+  count  = local.environments[local.env].enable_ecs ? 1 : 0
   source = "./modules/asg"
   vpc_id = local.vpc_id
   subnet_ids = [local.subnet_ids[0], local.subnet_ids[1]]
 }
 
 module "ecr" {
+  count  = local.environments[local.env].enable_ecr ? 1 : 0
   source = "./modules/ecr"
   repository_name = "devops-infraestructure"
 }

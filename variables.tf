@@ -21,3 +21,7 @@ variable "rds_db_name" {
 variable "docker_image" {
   type = string
 }
+
+variable "region" {
+  default = "us-east-1"
+}
