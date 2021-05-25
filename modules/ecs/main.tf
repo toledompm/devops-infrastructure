@@ -19,42 +19,57 @@ resource "aws_ecs_cluster" "backend" {
   tags = local.default_tags
 }
 
+resource "aws_cloudwatch_log_group" "app_log_group" {
+  name = "/aws/ecs/devops-culture"
+
+  tags = local.default_tags
+}
+
 resource "aws_ecs_task_definition" "app_task" {
-  family = "service"
+  family             = "service"
   execution_role_arn = aws_iam_role.backend_task_execution.arn
 
   container_definitions = jsonencode([
     {
-      name = "devops-application"
-      image = var.docker_image
-      cpu = 1
-      memory = 512
+      name      = "devops-application"
+      image     = var.docker_image
+      cpu       = 1
+      memory    = 512
       essential = true
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.app_log_group.name
+          "awslogs-region"        = "us-east-1"
+          "awslogs-stream-prefix" = "devops-culture"
+        }
+      }
       environment = [
         {
-          name = "PORT"
+          name  = "PORT"
           value = "3000"
         }
       ]
       portMappings = [
         {
           containerPort = 3000
-          hostPort = 3000
+          hostPort      = 3000
         }
       ]
+
     }
   ])
-  
+
   tags = local.default_tags
 }
 
 resource "aws_ecs_service" "backend" {
-  name            = "devops-infra-ecs-service"
-  cluster         = aws_ecs_cluster.backend.id
-  task_definition = aws_ecs_task_definition.app_task.arn
-  desired_count   = 1
+  name                               = "devops-infra-ecs-service"
+  cluster                            = aws_ecs_cluster.backend.id
+  task_definition                    = aws_ecs_task_definition.app_task.arn
+  desired_count                      = 1
   deployment_minimum_healthy_percent = 0
-  force_new_deployment = true
+  force_new_deployment               = true
 
   launch_type = "EC2"
 

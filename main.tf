@@ -5,9 +5,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "terraform-devops-infra-fatec"
-    key            = "terraform/main.tfstate"
-    region         = "us-east-1"
-    encrypt        = false
+    bucket  = "terraform-devops-infra-fatec"
+    key     = "terraform/main.tfstate"
+    region  = "us-east-1"
+    encrypt = false
   }
 }
