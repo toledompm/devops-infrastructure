@@ -103,3 +103,37 @@ resource "aws_iam_role_policy_attachment" "backend" {
   role       = aws_iam_role.backend_task_execution.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+
+resource "aws_cloudwatch_metric_alarm" "ecs_cpu_utilization_alarm" {
+  alarm_name                = "ecs_cpu_utilization_alarm"
+  comparison_operator       = "GreaterThanThreshold"
+  evaluation_periods        = "1"
+  metric_name               = "CPUUtilization"
+  namespace                 = "AWS/ECS"
+  period                    = "300"
+  statistic                 = "Average"
+  threshold                 = "80"
+  alarm_description         = "This metric monitors ecs cpu utilization"
+  insufficient_data_actions = []
+
+  dimensions = {
+    ClusterName = aws_ecs_cluster.backend.name
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "ecs_memory_utilization_alarm" {
+  alarm_name                = "ecs_memory_utilization_alarm"
+  comparison_operator       = "GreaterThanThreshold"
+  evaluation_periods        = "1"
+  metric_name               = "MemoryUtilization"
+  namespace                 = "AWS/ECS"
+  period                    = "300"
+  statistic                 = "Average"
+  threshold                 = "80"
+  alarm_description         = "This metric monitors ecs memory utilization"
+  insufficient_data_actions = []
+
+  dimensions = {
+    ClusterName = aws_ecs_cluster.backend.name
+  }
+}
