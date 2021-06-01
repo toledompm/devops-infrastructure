@@ -25,7 +25,7 @@ resource "aws_db_instance" "db" {
   username               = var.username
   password               = var.password
   port                   = var.port
-  identifier             = var.name
+  identifier             = var.identifier
   allocated_storage      = var.storage_size
 
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
