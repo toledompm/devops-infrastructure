@@ -18,7 +18,7 @@ variable "name" {
 
 variable "identifier" {
   type        = string
-  default     = ""
+  default     = "taskapp-db"
   description = "Database identifier"
 }
 
