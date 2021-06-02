@@ -36,6 +36,21 @@ resource "aws_autoscaling_group" "backend" {
   max_size = 1
   health_check_grace_period = 150
   health_check_type = "EC2"
+  enabled_metrics = [
+    "GroupDesiredCapacity",
+    "GroupInServiceCapacity",
+    "GroupPendingCapacity",
+    "GroupMinSize",
+    "GroupMaxSize",
+    "GroupInServiceInstances",
+    "GroupPendingInstances",
+    "GroupStandbyInstances",
+    "GroupStandbyCapacity",
+    "GroupTerminatingCapacity",
+    "GroupTerminatingInstances",
+    "GroupTotalCapacity",
+    "GroupTotalInstances"
+  ]
 }
 
 resource "aws_security_group" "asg_sg" {
