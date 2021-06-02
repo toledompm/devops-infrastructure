@@ -19,7 +19,7 @@ variable "name" {
 variable "identifier" {
   type        = string
   default     = ""
-  description = "taskapp-db"
+  description = "Database identifier"
 }
 
 variable "storage_size" {
