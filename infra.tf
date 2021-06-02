@@ -25,10 +25,10 @@ module "network" {
 module "rds" {
   count            = local.environments[local.env].enable_rds ? 1 : 0
   source           = "./modules/rds"
-  username         = var.rds_username
-  password         = var.rds_password
-  name             = var.rds_db_name
-  port             = var.rds_port
+  username         = var.RDS_USERNAME
+  password         = var.RDS_PASSWORD
+  name             = var.RDS_DB_NAME
+  port             = var.RDS_PORT
   vpc_id           = local.vpc_id
   public_subnets   = [local.subnet_ids[2], local.subnet_ids[3]]
 }
@@ -38,7 +38,7 @@ module "ecs" {
   source = "./modules/ecs"
   vpc_id = local.vpc_id
   subnet_ids = [local.subnet_ids[0], local.subnet_ids[1]]
-  docker_image = var.docker_image
+  docker_image = var.DOCKER_IMAGE
 }
 
 module "asg" {
