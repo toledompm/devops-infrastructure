@@ -1,4 +1,4 @@
-name: deploy-terraform
+name: ci-cd-terraform
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '**'
 
 jobs:
-  deploy:
+  plan:
     runs-on: ubuntu-latest
     container: hashicorp/terraform:0.13.7 # your docker image
     steps:
@@ -18,18 +18,51 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.REGION }}
+          aws-region: us-east-1
 
       - name: Init Terraform
         id: terraform-init
         run: |
           terraform init
-      - name: Terraform switch workspaces
+
+      - name: Terraform chooses workspaces
         id: terraform-workspaces
         run: |
           terraform workspace select prod
-          
+      
       - name: Terraform plan
         id: terraform-plan
         run: |
           terraform plan
+          
+  manual_deploy:
+    if: github.ref == 'main'
+    runs-on: ubuntu-latest
+    container: hashicorp/terraform:0.13.7 # your docker image
+    needs: plan
+    environment: production
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2.3.4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Init Terraform
+        id: terraform-init
+        run: |
+          terraform init
+
+      - name: Terraform switch workspaces
+        id: terraform-workspaces
+        run: |
+          terraform workspace select prod
+
+      - name: Terraform apply
+        id: terraform-apply
+        run: |
+          terraform apply
