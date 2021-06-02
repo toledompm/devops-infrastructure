@@ -16,6 +16,12 @@ variable "name" {
   description = "Database name"
 }
 
+variable "identifier" {
+  type        = string
+  default     = "taskapp-db"
+  description = "Database identifier"
+}
+
 variable "storage_size" {
   type        = number
   default     = 10
