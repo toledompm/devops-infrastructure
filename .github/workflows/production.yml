@@ -64,7 +64,7 @@ jobs:
       - name: Terraform apply
         id: terraform-apply
         run: |
-          terraform apply
+          terraform apply -auto-approve
 
   manual_destroy:
     runs-on: ubuntu-latest

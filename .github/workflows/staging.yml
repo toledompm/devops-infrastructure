@@ -28,7 +28,7 @@ jobs:
       - name: Terraform chooses workspaces
         id: terraform-workspaces
         run: |
-          terraform workspace select prod
+          terraform workspace select staging
       
       - name: Terraform plan
         id: terraform-plan
@@ -59,12 +59,12 @@ jobs:
       - name: Terraform switch workspaces
         id: terraform-workspaces
         run: |
-          terraform workspace select prod
+          terraform workspace select staging
 
       - name: Terraform apply
         id: terraform-apply
         run: |
-          terraform apply
+          terraform apply -auto-approve
 
   manual_destroy:
     runs-on: ubuntu-latest
@@ -90,7 +90,7 @@ jobs:
       - name: Terraform switch workspaces
         id: terraform-workspaces
         run: |
-          terraform workspace select prod
+          terraform workspace select staging
 
       - name: Terraform destroy
         id: terraform-destroy
