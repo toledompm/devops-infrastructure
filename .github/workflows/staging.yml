@@ -95,4 +95,4 @@ jobs:
       - name: Terraform destroy
         id: terraform-destroy
         run: |
-          terraform destroy
+          terraform destroy -auto-approve

@@ -1,6 +1,6 @@
 # DevOps Infrastructure
 
-This repository contains the infrastructure as code of [DevOps Culture project](https://github.com/toledompm/devops-culture) using Amazon Web Services (AWS) as cloud provider
+This repository contains the infrastructure as code of [DevOps Culture project](https://github.com/toledompm/devops-culture) using Amazon Web Services (AWS) as cloud provider.
 
 ## Modules
 
