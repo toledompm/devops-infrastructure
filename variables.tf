@@ -1,10 +1,11 @@
 variable "RDS_USERNAME" {
   type        = string
-  default     = ""
+  default     = "devopsapp"
 }
 
 variable "RDS_PASSWORD" {
   type        = string
+  default     = "devopsapp"
   description = "Must be greater than 8 characters"
 }
 
@@ -15,13 +16,15 @@ variable "RDS_PORT" {
 
 variable "RDS_DB_NAME" {
   type        = string
-  default     = ""
+  default     = "devopsapp"
 }
 
 variable "DOCKER_IMAGE" {
-  type = string
+  type        = string
+  default     = "jasoncarneiro/devops-app:latest"
 }
 
 variable "REGION" {
-  default = "us-east-1"
+  type        = string
+  default     = "us-east-1"
 }
