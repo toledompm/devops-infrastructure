@@ -1,9 +1,10 @@
-name: ci-cd-terraform
+name: staging-deploy-terraform
 
 on:
-  push:
+  pull_request:
     branches:
       - '**'
+      - '!main'
 
 jobs:
   plan:
@@ -36,11 +37,10 @@ jobs:
           terraform plan
           
   manual_deploy:
-    if: github.ref == 'main'
     runs-on: ubuntu-latest
     container: hashicorp/terraform:0.13.7 # your docker image
     needs: plan
-    environment: production
+    environment: staging
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2.3.4
@@ -68,11 +68,10 @@ jobs:
           terraform apply
 
   manual_destroy:
-    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     container: hashicorp/terraform:0.13.7 # your docker image
-    needs: plan
-    environment: production
+    needs: manual_deploy
+    environment: staging
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2.3.4
