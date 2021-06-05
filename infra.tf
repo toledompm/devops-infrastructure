@@ -53,3 +53,7 @@ module "ecr" {
   source = "./modules/ecr"
   repository_name = "devops-infraestructure"
 }
+
+module "iam" {
+  source = "./modules/iam"
+}
