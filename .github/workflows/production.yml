@@ -1,4 +1,4 @@
-name: production-deploy-terraform
+name: production-deploy
 
 on:
   push:

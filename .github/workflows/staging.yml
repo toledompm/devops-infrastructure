@@ -1,4 +1,4 @@
-name: staging-deploy-terraform
+name: staging-deploy
 
 on:
   push:
